@@ -1,0 +1,4 @@
+pyTelegramBotAPI
+setuptools
+cython
+pyyaml

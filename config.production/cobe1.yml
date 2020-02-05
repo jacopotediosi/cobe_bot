@@ -1,0 +1,22 @@
+db_host: db
+db_port: 3306
+db_username: root
+db_password: REPLACE-HERE
+db_database: cobe1
+bot_token: 111111111:XXXX-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+creator_id: 00000000
+creator_nickname: XXXXXXXXX
+learn_enabled: true
+chat_whitelist:
+    00000000000: Group Title
+    -1111111111: Another Group Title
+trigger_enabled: true
+trigger_words:
+    - "@cobe1bot"
+    - "cobe1bot"
+    - "cobe1"
+random_enabled: true
+random_percentage: 200
+private_reply_enabled: true
+blacklist_words:
+    - "#hashtag"

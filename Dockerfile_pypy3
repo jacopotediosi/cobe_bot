@@ -1,0 +1,18 @@
+FROM pypy:3
+
+COPY requirements.txt .
+COPY /cobe /cobe
+COPY /src /src
+
+RUN apt update && apt -y upgrade && \
+    apt -y install python3-dev && \
+    pip install -r requirements.txt && \
+    cd /cobe && \
+    pypy3 setup.py build && \
+    pypy3 setup.py install && \
+    rm -rf /cobe requirements.txt && \
+    apt autoremove && apt clean
+
+WORKDIR /src
+
+CMD ["pypy3", "main.py"]
