@@ -1,0 +1,58 @@
+version: "3.5"
+
+x-common-variables: &common-variables
+    MYSQL_HOST: "db"
+    MYSQL_PORT: "3306"
+    MYSQL_USERNAME: "root"
+    MYSQL_ROOT_PASSWORD: "REPLACE-HERE"
+
+services:
+  cobe1:
+      build: './'
+      depends_on:
+          - db
+      restart: always
+      read_only: true
+      tty: true
+      environment:
+          <<: *common-variables
+          MYSQL_DB: "cobe1"
+          BOT_TOKEN: "111111111:XXXX-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+          CREATOR_ID: "00000000"
+          CREATOR_NICKNAME: "XXXXXXXXX"
+          LEARN_ENABLED: "1"
+          CHAT_ALLOWLIST: "00000000000,00000000001"
+          TRIGGER_ENABLED: "1"
+          TRIGGER_WORDS: "@cobe1bot,cobe1bot,cobe1"
+          RANDOM_ENABLED: "1"
+          RANDOM_PERCENTAGE: "200"
+          PRIVATE_REPLY_ENABLED: "1"
+          BLOCKLIST_WORDS: "#hashtag"
+      logging:
+          driver: "json-file"
+          options:
+              max-file: "1"
+              max-size: "20m"
+  db:
+      restart: always
+      image: mariadb
+      command: --default-authentication-plugin=mysql_native_password
+      environment: *common-variables
+      volumes:
+          - ./db/mysql/:/var/lib/mysql
+          - ./db/config:/etc/mysql/conf.d
+      logging:
+          driver: "json-file"
+          options:
+              max-file: "1"
+              max-size: "10m"
+      healthcheck:
+          test: "mysqladmin status -u root -p$$MYSQL_ROOT_PASSWORD || exit 1"
+          timeout: 10s
+          interval: 1m30s
+          retries: 2
+
+networks:
+    default:
+        driver_opts:
+            com.docker.network.bridge.name: cobebot
